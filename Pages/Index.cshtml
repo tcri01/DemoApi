@@ -1,10 +1,46 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "首頁 - AI 會員管理系統";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="hero-section fade-in">
+    <div class="container">
+        <span class="ai-badge mb-3 d-inline-block">Powered by AI</span>
+        <h1 class="hero-title">智能會員管理系統</h1>
+        <p class="lead text-muted mb-5">
+            結合 AI 輔助技術，為您的會員管理注入強大動能。<br />
+            自動生成建議、精準描述補全，提升工作效率。
+        </p>
+        <div class="d-flex justify-content-center gap-3">
+            <a asp-page="/Members/Index" class="btn btn-primary btn-lg">管理會員中心</a>
+            <a href="#features" class="btn btn-outline-secondary btn-lg">了解更多</a>
+        </div>
+    </div>
+</div>
+
+<div id="features" class="container py-5">
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card h-100 p-4">
+                <div class="mb-3 text-primary"><i class="bi bi-person-check-fill fs-1"></i></div>
+                <h3>高效管理</h3>
+                <p class="text-muted">簡潔直觀的介面，輕鬆處理大量會員資料，支援快速搜尋與篩選。</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 p-4">
+                <div class="mb-3 text-secondary"><i class="bi bi-cpu-fill fs-1"></i></div>
+                <h3>AI 輔助建議</h3>
+                <p class="text-muted">根據會員背景與行為，自動產生個人化的備註建議，深入洞察客戶需求。</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 p-4">
+                <div class="mb-3 text-success"><i class="bi bi-pencil-square fs-1"></i></div>
+                <h3>描述自動補全</h3>
+                <p class="text-muted">輸入關鍵字，AI 幫您完成冗長的背景描述，確保內容專業且一致。</p>
+            </div>
+        </div>
+    </div>
 </div>

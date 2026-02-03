@@ -1,0 +1,31 @@
+@page
+@model DemoApi.Pages.Members.DeleteModel
+
+@{
+    ViewData["Title"] = "刪除會員";
+}
+
+<div class="container py-4 fade-in">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="card p-4 border-danger">
+                <h2 class="fw-bold text-danger mb-4">確認刪除會員？</h2>
+                
+                <div class="alert alert-warning">
+                    確定要刪除會員 <strong>@Model.Member.Name</strong> 嗎？此操作不可撤銷。
+                </div>
+
+                <div class="mb-4">
+                    <p class="text-muted mb-1">Email</p>
+                    <p class="fw-bold">@Model.Member.Email</p>
+                </div>
+
+                <form method="post">
+                    <input type="hidden" asp-for="Member.Id" />
+                    <button type="submit" class="btn btn-danger">確定刪除</button>
+                    <a asp-page="./Index" class="btn btn-link text-muted">取消</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

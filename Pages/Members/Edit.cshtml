@@ -1,0 +1,109 @@
+@page
+@model DemoApi.Pages.Members.EditModel
+
+@{
+    ViewData["Title"] = "編輯會員";
+}
+
+<div class="container py-4 fade-in">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card p-4">
+                <h2 class="fw-bold mb-4">編輯會員資料</h2>
+
+                <form method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="Member.Id" />
+                    
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label asp-for="Member.Name" class="form-label">姓名</label>
+                            <input asp-for="Member.Name" id="memberName" class="form-control" />
+                            <span asp-validation-for="Member.Name" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Member.Email" class="form-label">Email</label>
+                            <input asp-for="Member.Email" class="form-control" />
+                            <span asp-validation-for="Member.Email" class="text-danger"></span>
+                        </div>
+                        <div class="col-12">
+                            <label asp-for="Member.Phone" class="form-label">電話</label>
+                            <input asp-for="Member.Phone" class="form-control" />
+                            <span asp-validation-for="Member.Phone" class="text-danger"></span>
+                        </div>
+                        
+                        <div class="col-12">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <label asp-for="Member.Bio" class="form-label">個人簡介</label>
+                                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="completeBio()">
+                                    <i class="bi bi-magic"></i> AI 補全描述
+                                </button>
+                            </div>
+                            <textarea asp-for="Member.Bio" id="memberBio" class="form-control" rows="3"></textarea>
+                            <span asp-validation-for="Member.Bio" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <label asp-for="Member.Notes" class="form-label">會員備註</label>
+                                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="suggestNotes()">
+                                    <i class="bi bi-lightbulb"></i> AI 建議
+                                </button>
+                            </div>
+                            <textarea asp-for="Member.Notes" id="memberNotes" class="form-control" rows="3"></textarea>
+                            <span asp-validation-for="Member.Notes" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 pt-4 border-top">
+                        <button type="submit" class="btn btn-primary">更新資料</button>
+                        <a asp-page="Index" class="btn btn-link text-muted">返回列表</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        async function suggestNotes() {
+            const name = document.getElementById('memberName').value;
+            const bio = document.getElementById('memberBio').value;
+            
+            const btn = event.currentTarget;
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> 產生中...';
+
+            try {
+                const response = await fetch(`?handler=SuggestNotes&name=${encodeURIComponent(name)}&bio=${encodeURIComponent(bio)}`);
+                const data = await response.json();
+                if (data.success) {
+                    document.getElementById('memberNotes').value = data.suggestion;
+                }
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="bi bi-lightbulb"></i> AI 建議';
+            }
+        }
+
+        async function completeBio() {
+            const currentBio = document.getElementById('memberBio').value;
+            
+            const btn = event.currentTarget;
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> 處理中...';
+
+            try {
+                const response = await fetch(`?handler=CompleteBio&currentBio=${encodeURIComponent(currentBio)}`);
+                const data = await response.json();
+                if (data.success) {
+                    document.getElementById('memberBio').value = data.completed;
+                }
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="bi bi-magic"></i> AI 補全描述';
+            }
+        }
+    </script>
+}
