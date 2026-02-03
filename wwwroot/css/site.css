@@ -1,4 +1,4 @@
-:root {
+ :root {
     --primary-color: #D30010; /* Sakura Red */
     --primary-hover: #A3000C;
     --secondary-color: #333333;
@@ -9,6 +9,97 @@
     --text-main: #2c3e50;
     --text-muted: #6c757d;
     --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* Breadcrumb Styling */
+.breadcrumb-container {
+    background: #f1f3f5;
+    padding: 0.5rem 0;
+    margin-bottom: 2rem;
+    font-size: 0.85rem;
+}
+
+.breadcrumb-item a {
+    color: var(--text-muted);
+    text-decoration: none;
+}
+
+.breadcrumb-item.active {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+/* Mega Menu / Dropdown Header */
+.nav-item.dropdown:hover .dropdown-menu {
+    display: block;
+    margin-top: 0;
+}
+
+.dropdown-menu {
+    border: none;
+    border-top: 3px solid var(--primary-color);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    border-radius: 0;
+}
+
+.dropdown-item:hover {
+    background-color: var(--primary-color);
+    color: white !important;
+}
+
+/* Product Sidebar */
+.product-sidebar {
+    background: white;
+    padding: 1.5rem;
+    border-right: 1px solid #eee;
+    height: 100%;
+}
+
+.sidebar-title {
+    font-weight: 800;
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+    color: var(--secondary-color);
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 0.5rem;
+}
+
+.sidebar-nav .nav-link {
+    color: var(--text-main) !important;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #f8f9fa;
+}
+
+.sidebar-nav .nav-link:hover, .sidebar-nav .nav-link.active {
+    color: var(--primary-color) !important;
+}
+
+/* Product Card Enhancements */
+.product-card {
+    transition: all 0.3s ease;
+}
+
+.product-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+}
+
+.product-img-wrapper {
+    height: 200px;
+    background: #f8f9fa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.product-img-wrapper img {
+    max-width: 80%;
+    transition: transform 0.3s;
+}
+
+.product-card:hover .product-img-wrapper img {
+    transform: scale(1.1);
 }
 
 body {

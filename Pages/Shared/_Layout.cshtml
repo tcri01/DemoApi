@@ -38,22 +38,43 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-end">
                     <ul class="navbar-nav gap-2">
                         <li class="nav-item">
-                            <a class="nav-link active" asp-page="/Index">首頁</a>
+                            <a class="nav-link @(Context.Request.Path == "/" ? "active" : "")" asp-page="/Index">首頁</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle @(Context.Request.Path.StartsWithSegments("/Products") ? "active" : "")" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                產品資訊
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" asp-page="/Products/List" asp-route-category="pitless">無機坑電梯</a></li>
+                                <li><a class="dropdown-item" asp-page="/Products/List" asp-route-category="home">家庭電梯</a></li>
+                                <li><a class="dropdown-item" asp-page="/Products/List" asp-route-category="bracket">角架電梯</a></li>
+                            </ul>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">產品資訊</a>
+                            <a class="nav-link" asp-page="/Cases/Index">實績案例</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">實績案例</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link btn btn-primary text-white px-3" asp-page="/Members/Create">聯絡我們</a>
+                            <a class="nav-link btn btn-primary text-white px-3" asp-page="/Members/Index">會員管理</a>
                         </li>
                     </ul>
                 </div>
             </div>
         </nav>
     </header>
+
+    @if (Context.Request.Path != "/")
+    {
+        <div class="breadcrumb-container">
+            <div class="container">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-0">
+                        <li class="breadcrumb-item"><a asp-page="/Index">首頁</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">@ViewData["Title"]</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    }
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()

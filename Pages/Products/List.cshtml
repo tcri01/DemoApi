@@ -1,0 +1,52 @@
+@page
+@model DemoApi.Pages.Products.ListModel
+@{
+    ViewData["Title"] = Model.DisplayCategory;
+}
+
+<div class="row">
+    <!-- Sidebar -->
+    <div class="col-md-3">
+        <div class="product-sidebar shadow-sm">
+            <h5 class="sidebar-title">產品系列</h5>
+            <nav class="sidebar-nav nav flex-column">
+                <a class="nav-link @(Model.Category == "pitless" ? "active" : "")" asp-page="./List" asp-route-category="pitless">無機坑電梯</a>
+                <a class="nav-link @(Model.Category == "home" ? "active" : "")" asp-page="./List" asp-route-category="home">家庭電梯</a>
+                <a class="nav-link @(Model.Category == "bracket" ? "active" : "")" asp-page="./List" asp-route-category="bracket">角架電梯</a>
+                <a class="nav-link @(string.IsNullOrEmpty(Model.Category) ? "active" : "")" asp-page="./List">顯示全部</a>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="col-md-9">
+        <h2 class="fw-bold mb-4">@Model.DisplayCategory</h2>
+        
+        <div class="row g-4">
+            @foreach (var product in Model.Products)
+            {
+                <div class="col-lg-4 col-md-6">
+                    <div class="card h-100 product-card">
+                        <div class="product-img-wrapper">
+                             <img src="@product.ImageUrl" alt="@product.Name" class="img-fluid">
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title fw-bold">@product.Name</h5>
+                            <p class="card-text text-muted small">@product.Description</p>
+                        </div>
+                        <div class="card-footer bg-white border-0 pb-3">
+                            <button class="btn btn-outline-primary btn-sm w-100">查看規格</button>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        @if (!Model.Products.Any())
+        {
+            <div class="text-center py-5">
+                <p class="text-muted">此分類目前沒有商品。</p>
+            </div>
+        }
+    </div>
+</div>
