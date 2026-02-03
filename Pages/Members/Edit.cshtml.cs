@@ -70,15 +70,15 @@ namespace DemoApi.Pages.Members
           return (_context.Members?.Any(e => e.Id == id)).GetValueOrDefault();
         }
 
-        public async Task<JsonResult> OnGetSuggestNotesAsync(string name, string bio)
+        public async Task<JsonResult> OnGetSuggestContentAsync(string name, string company)
         {
-            var suggestion = await _aiService.SuggestNotesAsync(name, bio);
+            var suggestion = await _aiService.SuggestNotesAsync(name, company);
             return new JsonResult(new { success = true, suggestion });
         }
 
-        public async Task<JsonResult> OnGetCompleteBioAsync(string currentBio)
+        public async Task<JsonResult> OnGetCompleteContentAsync(string currentText)
         {
-            var completed = await _aiService.CompleteDescriptionAsync(currentBio);
+            var completed = await _aiService.CompleteDescriptionAsync(currentText);
             return new JsonResult(new { success = true, completed });
         }
     }

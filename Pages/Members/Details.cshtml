@@ -2,7 +2,7 @@
 @model DemoApi.Pages.Members.DetailsModel
 
 @{
-    ViewData["Title"] = "會員詳情";
+    ViewData["Title"] = "聯絡訊息詳情";
 }
 
 <div class="container py-4 fade-in">
@@ -10,13 +10,16 @@
         <div class="col-lg-8">
             <div class="card p-4">
                 <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h2 class="fw-bold m-0">會員詳情</h2>
-                    <a asp-page="./Edit" asp-route-id="@Model.Member.Id" class="btn btn-outline-primary">編輯資料</a>
+                    <h2 class="fw-bold m-0">聯絡訊息詳情</h2>
+                    <a asp-page="./Edit" asp-route-id="@Model.Member.Id" class="btn btn-outline-primary">編輯訊息</a>
                 </div>
 
                 <dl class="row">
-                    <dt class="col-sm-3 text-muted">姓名</dt>
-                    <dd class="col-sm-9 fw-bold">@Model.Member.Name</dd>
+                    <dt class="col-sm-3 text-muted">公司名稱</dt>
+                    <dd class="col-sm-9 fw-bold">@Model.Member.Company</dd>
+
+                    <dt class="col-sm-3 text-muted">聯絡人</dt>
+                    <dd class="col-sm-9">@Model.Member.Name</dd>
 
                     <dt class="col-sm-3 text-muted">Email</dt>
                     <dd class="col-sm-9">@Model.Member.Email</dd>
@@ -24,17 +27,15 @@
                     <dt class="col-sm-3 text-muted">電話</dt>
                     <dd class="col-sm-9">@Model.Member.Phone</dd>
 
-                    <dt class="col-sm-3 text-muted">個人簡介</dt>
+                    <dt class="col-sm-3 text-muted">行動電話</dt>
+                    <dd class="col-sm-9">@Model.Member.Mobile</dd>
+
+                    <dt class="col-sm-3 text-muted">問題或建議</dt>
                     <dd class="col-sm-9">
-                        <div class="p-3 bg-light rounded">@Model.Member.Bio</div>
+                        <div class="p-3 bg-light rounded border-start border-4 border-primary" style="white-space: pre-wrap;">@Model.Member.Content</div>
                     </dd>
 
-                    <dt class="col-sm-3 text-muted">會員備註</dt>
-                    <dd class="col-sm-9">
-                        <div class="p-3 bg-light rounded border-start border-4 border-primary">@Model.Member.Notes</div>
-                    </dd>
-
-                    <dt class="col-sm-3 text-muted">建立時間</dt>
+                    <dt class="col-sm-3 text-muted">收件時間</dt>
                     <dd class="col-sm-9">@Model.Member.CreatedAt.ToLocalTime()</dd>
                 </dl>
 

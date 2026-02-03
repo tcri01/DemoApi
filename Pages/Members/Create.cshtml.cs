@@ -38,17 +38,17 @@ namespace DemoApi.Pages.Members
             return RedirectToPage("./Index");
         }
 
-        // AI 輔助功能: 產生備註建議
-        public async Task<JsonResult> OnGetSuggestNotesAsync(string name, string bio)
+        // AI 輔助功能: 產生內容建議
+        public async Task<JsonResult> OnGetSuggestContentAsync(string name, string company)
         {
-            var suggestion = await _aiService.SuggestNotesAsync(name, bio);
+            var suggestion = await _aiService.SuggestNotesAsync(name, company); // Reusing service for now
             return new JsonResult(new { success = true, suggestion });
         }
 
-        // AI 輔助功能: 描述補全
-        public async Task<JsonResult> OnGetCompleteBioAsync(string currentBio)
+        // AI 輔助功能: 內容補全
+        public async Task<JsonResult> OnGetCompleteContentAsync(string currentText)
         {
-            var completed = await _aiService.CompleteDescriptionAsync(currentBio);
+            var completed = await _aiService.CompleteDescriptionAsync(currentText);
             return new JsonResult(new { success = true, completed });
         }
     }

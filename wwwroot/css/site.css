@@ -1,51 +1,94 @@
 :root {
-    --primary-color: #6366f1;
-    --primary-hover: #4f46e5;
-    --secondary-color: #ec4899;
-    --bg-gradient: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-    --glass-bg: rgba(255, 255, 255, 0.7);
-    --glass-border: rgba(255, 255, 255, 0.2);
-    --text-main: #1e293b;
-    --text-muted: #64748b;
-    --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    --primary-color: #D30010; /* Sakura Red */
+    --primary-hover: #A3000C;
+    --secondary-color: #333333;
+    --accent-color: #f8f9fa;
+    --bg-gradient: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%);
+    --glass-bg: rgba(255, 255, 255, 0.95);
+    --glass-border: rgba(0, 0, 0, 0.05);
+    --text-main: #2c3e50;
+    --text-muted: #6c757d;
+    --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
 
 body {
     background: var(--bg-gradient);
-    background-attachment: fixed;
     color: var(--text-main);
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    min-height: 100vh;
-    margin: 0;
+    font-family: 'Noto Sans TC', 'Inter', sans-serif;
 }
 
 .navbar {
-    background: var(--glass-bg) !important;
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid var(--glass-border);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    background: #ffffff !important;
+    border-bottom: 2px solid var(--primary-color);
+    padding: 0.8rem 0;
 }
 
-.card {
-    background: var(--glass-bg);
-    backdrop-filter: blur(12px);
-    border: 1px solid var(--glass-border);
-    border-radius: 1rem;
-    box-shadow: var(--card-shadow);
-    transition: transform 0.3s ease;
+.brand-text {
+    font-weight: 800;
+    line-height: 1;
+    color: var(--secondary-color);
+    letter-spacing: -0.5px;
 }
 
-.card:hover {
-    transform: translateY(-5px);
+.brand-text span {
+    color: var(--primary-color);
+}
+
+.brand-text small {
+    font-size: 0.65rem;
+    font-weight: 400;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-top: 2px;
+}
+
+.logo-circle {
+    width: 32px;
+    height: 32px;
+    background: var(--primary-color);
+    border-radius: 50%;
+    position: relative;
+}
+
+.logo-circle::after {
+    content: '';
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background: white;
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.nav-link {
+    font-weight: 600;
+    color: var(--secondary-color) !important;
+    transition: color 0.2s;
+}
+
+.nav-link:hover {
+    color: var(--primary-color) !important;
+}
+
+.nav-link.btn-primary {
+    background-color: var(--primary-color) !important;
+    border-color: var(--primary-color) !important;
+    color: white !important;
+    padding: 0.5rem 1.5rem !important;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.nav-link.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(211, 0, 16, 0.3);
 }
 
 .btn-primary {
     background-color: var(--primary-color);
     border-color: var(--primary-color);
-    padding: 0.6rem 1.5rem;
-    border-radius: 0.75rem;
-    font-weight: 600;
-    transition: all 0.2s ease;
+    border-radius: 4px;
 }
 
 .btn-primary:hover {
@@ -54,18 +97,43 @@ body {
     box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
 }
 
+.card {
+    border: none;
+    border-top: 4px solid var(--primary-color);
+    border-radius: 0;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
 .hero-section {
-    padding: 6rem 0;
-    text-align: center;
+    padding: 8rem 0;
+    background: url('https://images.unsplash.com/photo-1517090504586-fde19ea6066f?q=80&w=2670&auto=format&fit=crop') center/cover;
+    position: relative;
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.85);
+}
+
+.hero-section .container {
+    position: relative;
+    z-index: 1;
 }
 
 .hero-title {
-    font-size: 3.5rem;
-    font-weight: 800;
-    background: linear-gradient(to right, #6366f1, #ec4899);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    margin-bottom: 1.5rem;
+    font-size: 4rem;
+    font-weight: 900;
+    color: var(--secondary-color);
+    margin-bottom: 2rem;
+}
+
+.hero-title span {
+    color: var(--primary-color);
 }
 
 .ai-badge {

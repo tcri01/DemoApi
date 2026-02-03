@@ -10,7 +10,18 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
 builder.Services.AddScoped<IAIService, AIService>();
-builder.Services.AddRazorPages();
+builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
+builder.Services.AddRazorPages()
+    .AddViewLocalization()
+    .AddDataAnnotationsLocalization();
+
+builder.Services.Configure<RequestLocalizationOptions>(options =>
+{
+    var supportedCultures = new[] { "zh-TW", "en-US", "ja-JP" };
+    options.SetDefaultCulture(supportedCultures[0])
+        .AddSupportedCultures(supportedCultures)
+        .AddSupportedUICultures(supportedCultures);
+});
 
 var app = builder.Build();
 
@@ -26,6 +37,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseRequestLocalization();
 
 app.UseAuthorization();
 

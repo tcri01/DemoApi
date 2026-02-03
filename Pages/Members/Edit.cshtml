@@ -2,56 +2,61 @@
 @model DemoApi.Pages.Members.EditModel
 
 @{
-    ViewData["Title"] = "編輯會員";
+    ViewData["Title"] = "編輯聯絡訊息";
 }
 
 <div class="container py-4 fade-in">
     <div class="row justify-content-center">
         <div class="col-lg-8">
             <div class="card p-4">
-                <h2 class="fw-bold mb-4">編輯會員資料</h2>
+                <h2 class="fw-bold mb-4">編輯聯絡訊息</h2>
 
                 <form method="post">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <input type="hidden" asp-for="Member.Id" />
+                    <input type="hidden" asp-for="Member.CreatedAt" />
                     
                     <div class="row g-3">
+                        <div class="col-12">
+                            <label asp-for="Member.Company" class="form-label">公司名稱</label>
+                            <input asp-for="Member.Company" id="companyName" class="form-control" />
+                            <span asp-validation-for="Member.Company" class="text-danger"></span>
+                        </div>
                         <div class="col-md-6">
-                            <label asp-for="Member.Name" class="form-label">姓名</label>
-                            <input asp-for="Member.Name" id="memberName" class="form-control" />
+                            <label asp-for="Member.Name" class="form-label">聯絡人姓名</label>
+                            <input asp-for="Member.Name" id="contactName" class="form-control" />
                             <span asp-validation-for="Member.Name" class="text-danger"></span>
                         </div>
                         <div class="col-md-6">
-                            <label asp-for="Member.Email" class="form-label">Email</label>
+                            <label asp-for="Member.Email" class="form-label">E-mail</label>
                             <input asp-for="Member.Email" class="form-control" />
                             <span asp-validation-for="Member.Email" class="text-danger"></span>
                         </div>
-                        <div class="col-12">
+                        <div class="col-md-6">
                             <label asp-for="Member.Phone" class="form-label">電話</label>
                             <input asp-for="Member.Phone" class="form-control" />
                             <span asp-validation-for="Member.Phone" class="text-danger"></span>
                         </div>
+                        <div class="col-md-6">
+                            <label asp-for="Member.Mobile" class="form-label">行動電話</label>
+                            <input asp-for="Member.Mobile" class="form-control" />
+                            <span asp-validation-for="Member.Mobile" class="text-danger"></span>
+                        </div>
                         
                         <div class="col-12">
                             <div class="d-flex justify-content-between align-items-center mb-1">
-                                <label asp-for="Member.Bio" class="form-label">個人簡介</label>
-                                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="completeBio()">
-                                    <i class="bi bi-magic"></i> AI 補全描述
-                                </button>
+                                <label asp-for="Member.Content" class="form-label">問題或建議</label>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="completeContent()">
+                                        <i class="bi bi-magic"></i> AI 補全
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="suggestContent()">
+                                        <i class="bi bi-lightbulb"></i> AI 建議
+                                    </button>
+                                </div>
                             </div>
-                            <textarea asp-for="Member.Bio" id="memberBio" class="form-control" rows="3"></textarea>
-                            <span asp-validation-for="Member.Bio" class="text-danger"></span>
-                        </div>
-
-                        <div class="col-12">
-                            <div class="d-flex justify-content-between align-items-center mb-1">
-                                <label asp-for="Member.Notes" class="form-label">會員備註</label>
-                                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="suggestNotes()">
-                                    <i class="bi bi-lightbulb"></i> AI 建議
-                                </button>
-                            </div>
-                            <textarea asp-for="Member.Notes" id="memberNotes" class="form-control" rows="3"></textarea>
-                            <span asp-validation-for="Member.Notes" class="text-danger"></span>
+                            <textarea asp-for="Member.Content" id="messageContent" class="form-control" rows="5"></textarea>
+                            <span asp-validation-for="Member.Content" class="text-danger"></span>
                         </div>
                     </div>
 
@@ -67,19 +72,18 @@
 
 @section Scripts {
     <script>
-        async function suggestNotes() {
-            const name = document.getElementById('memberName').value;
-            const bio = document.getElementById('memberBio').value;
-            
+        async function suggestContent() {
+            const name = document.getElementById('contactName').value;
+            const company = document.getElementById('companyName').value;
             const btn = event.currentTarget;
             btn.disabled = true;
-            btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> 產生中...';
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span>';
 
             try {
-                const response = await fetch(`?handler=SuggestNotes&name=${encodeURIComponent(name)}&bio=${encodeURIComponent(bio)}`);
+                const response = await fetch(`?handler=SuggestContent&name=${encodeURIComponent(name)}&company=${encodeURIComponent(company)}`);
                 const data = await response.json();
                 if (data.success) {
-                    document.getElementById('memberNotes').value = data.suggestion;
+                    document.getElementById('messageContent').value = data.suggestion;
                 }
             } finally {
                 btn.disabled = false;
@@ -87,22 +91,21 @@
             }
         }
 
-        async function completeBio() {
-            const currentBio = document.getElementById('memberBio').value;
-            
+        async function completeContent() {
+            const currentText = document.getElementById('messageContent').value;
             const btn = event.currentTarget;
             btn.disabled = true;
-            btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> 處理中...';
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span>';
 
             try {
-                const response = await fetch(`?handler=CompleteBio&currentBio=${encodeURIComponent(currentBio)}`);
+                const response = await fetch(`?handler=CompleteContent&currentText=${encodeURIComponent(currentText)}`);
                 const data = await response.json();
                 if (data.success) {
-                    document.getElementById('memberBio').value = data.completed;
+                    document.getElementById('messageContent').value = data.completed;
                 }
             } finally {
                 btn.disabled = false;
-                btn.innerHTML = '<i class="bi bi-magic"></i> AI 補全描述';
+                btn.innerHTML = '<i class="bi bi-magic"></i> AI 補全';
             }
         }
     </script>
