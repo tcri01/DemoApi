@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using DemoApi.Data;
@@ -14,13 +15,16 @@ namespace DemoApi.Pages.Members
             _context = context;
         }
 
-        public IList<Member> Member { get;set; } = default!;
+        public IList<Member> Members { get;set; } = default!;
+        
+        [BindProperty]
+        public Member Member { get; set; } = new();
 
         public async Task OnGetAsync()
         {
             if (_context.Members != null)
             {
-                Member = await _context.Members.ToListAsync();
+                Members = await _context.Members.ToListAsync();
             }
         }
     }

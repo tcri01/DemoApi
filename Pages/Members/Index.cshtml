@@ -27,9 +27,9 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @if (Model.Member.Any())
+                    @if (Model.Members.Any())
                     {
-                        @foreach (var item in Model.Member)
+                        @foreach (var item in Model.Members)
                         {
                             <tr>
                                 <td class="px-4 py-3 align-middle fw-bold text-muted">@item.item_id</td>
@@ -76,42 +76,7 @@
             </div>
             <form id="createMemberForm" method="post" asp-page="/Members/Create">
                 <div class="modal-body">
-                    <div class="row g-3">
-                        <div class="col-md-12">
-                            <label class="form-label">公司名稱</label>
-                            <input name="Member.Company" id="modalCompanyName" class="form-control" placeholder="請輸入公司名稱" />
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">聯絡人姓名</label>
-                            <input name="Member.Name" id="modalContactName" class="form-control" placeholder="請輸入姓名" required />
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">E-mail</label>
-                            <input name="Member.Email" type="email" class="form-control" placeholder="example@mail.com" required />
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">電話</label>
-                            <input name="Member.Phone" class="form-control" placeholder="02-12345678" />
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">行動電話</label>
-                            <input name="Member.Mobile" class="form-control" placeholder="0912-345678" required />
-                        </div>
-                        <div class="col-12">
-                            <div class="d-flex justify-content-between align-items-center mb-1">
-                                <label class="form-label">問題或建議</label>
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="completeContentModal()">
-                                        <i class="bi bi-magic"></i> AI 補全
-                                    </button>
-                                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="suggestContentModal()">
-                                        <i class="bi bi-lightbulb"></i> AI 建議
-                                    </button>
-                                </div>
-                            </div>
-                            <textarea name="Member.Content" id="modalMessageContent" class="form-control" rows="5" placeholder="請輸入您的問題或建議..."></textarea>
-                        </div>
-                    </div>
+                    <partial name="_MemberForm" for="Member" />
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">取消</button>
@@ -123,48 +88,7 @@
 </div>
 
 @section Scripts {
-    <script>
-        async function suggestContentModal() {
-            const name = document.getElementById('modalContactName').value;
-            const company = document.getElementById('modalCompanyName').value;
-            
-            const btn = event.currentTarget;
-            const originalContent = btn.innerHTML;
-            btn.disabled = true;
-            btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span>';
-
-            try {
-                const response = await fetch(`/Members/Create?handler=SuggestContent&name=${encodeURIComponent(name)}&company=${encodeURIComponent(company)}`);
-                const data = await response.json();
-                if (data.success) {
-                    document.getElementById('modalMessageContent').value = data.suggestion;
-                }
-            } finally {
-                btn.disabled = false;
-                btn.innerHTML = originalContent;
-            }
-        }
-
-        async function completeContentModal() {
-            const currentText = document.getElementById('modalMessageContent').value;
-            
-            const btn = event.currentTarget;
-            const originalContent = btn.innerHTML;
-            btn.disabled = true;
-            btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span>';
-
-            try {
-                const response = await fetch(`/Members/Create?handler=CompleteContent&currentText=${encodeURIComponent(currentText)}`);
-                const data = await response.json();
-                if (data.success) {
-                    document.getElementById('modalMessageContent').value = data.completed;
-                }
-            } finally {
-                btn.disabled = false;
-                btn.innerHTML = originalContent;
-            }
-        }
-    </script>
+    <partial name="_ValidationScriptsPartial" />
 }
     </div>
 </div>

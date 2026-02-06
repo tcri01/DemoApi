@@ -12,52 +12,10 @@
                 <h2 class="fw-bold mb-4 text-primary">聯絡我們</h2>
                 <p class="text-muted mb-4">如果您對我們的產品有任何問題或建議，請填寫下表，我們將有專人與您聯繫。</p>
 
-                <form method="post">
+                 <form method="post">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     
-                    <div class="row g-3">
-                        <div class="col-md-12">
-                            <label asp-for="Member.Company" class="form-label">公司名稱</label>
-                            <input asp-for="Member.Company" id="companyName" class="form-control" placeholder="請輸入公司名稱" />
-                            <span asp-validation-for="Member.Company" class="text-danger"></span>
-                        </div>
-                        <div class="col-md-6">
-                            <label asp-for="Member.Name" class="form-label">聯絡人姓名</label>
-                            <input asp-for="Member.Name" id="contactName" class="form-control" placeholder="請輸入姓名" />
-                            <span asp-validation-for="Member.Name" class="text-danger"></span>
-                        </div>
-                        <div class="col-md-6">
-                            <label asp-for="Member.Email" class="form-label">E-mail</label>
-                            <input asp-for="Member.Email" class="form-control" placeholder="example@mail.com" />
-                            <span asp-validation-for="Member.Email" class="text-danger"></span>
-                        </div>
-                        <div class="col-md-6">
-                            <label asp-for="Member.Phone" class="form-label">電話</label>
-                            <input asp-for="Member.Phone" class="form-control" placeholder="02-12345678" />
-                            <span asp-validation-for="Member.Phone" class="text-danger"></span>
-                        </div>
-                        <div class="col-md-6">
-                            <label asp-for="Member.Mobile" class="form-label">行動電話</label>
-                            <input asp-for="Member.Mobile" class="form-control" placeholder="0912-345678" />
-                            <span asp-validation-for="Member.Mobile" class="text-danger"></span>
-                        </div>
-                        
-                        <div class="col-12">
-                            <div class="d-flex justify-content-between align-items-center mb-1">
-                                <label asp-for="Member.Content" class="form-label">問題或建議</label>
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="completeContent()">
-                                        <i class="bi bi-magic"></i> AI 補全
-                                    </button>
-                                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="suggestContent()">
-                                        <i class="bi bi-lightbulb"></i> AI 建議
-                                    </button>
-                                </div>
-                            </div>
-                            <textarea asp-for="Member.Content" id="messageContent" class="form-control" rows="5" placeholder="請輸入您的問題或建議..."></textarea>
-                            <span asp-validation-for="Member.Content" class="text-danger"></span>
-                        </div>
-                    </div>
+                    <partial name="_MemberForm" for="Member" />
 
                     <div class="mt-4 pt-4 border-top text-end">
                         <button type="submit" class="btn btn-primary btn-lg px-5">寄出訊息</button>
@@ -69,44 +27,5 @@
 </div>
 
 @section Scripts {
-    <script>
-        async function suggestContent() {
-            const name = document.getElementById('contactName').value;
-            const company = document.getElementById('companyName').value;
-            
-            const btn = event.currentTarget;
-            btn.disabled = true;
-            btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span>';
-
-            try {
-                const response = await fetch(`?handler=SuggestContent&name=${encodeURIComponent(name)}&company=${encodeURIComponent(company)}`);
-                const data = await response.json();
-                if (data.success) {
-                    document.getElementById('messageContent').value = data.suggestion;
-                }
-            } finally {
-                btn.disabled = false;
-                btn.innerHTML = '<i class="bi bi-lightbulb"></i> AI 建議';
-            }
-        }
-
-        async function completeContent() {
-            const currentText = document.getElementById('messageContent').value;
-            
-            const btn = event.currentTarget;
-            btn.disabled = true;
-            btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span>';
-
-            try {
-                const response = await fetch(`?handler=CompleteContent&currentText=${encodeURIComponent(currentText)}`);
-                const data = await response.json();
-                if (data.success) {
-                    document.getElementById('messageContent').value = data.completed;
-                }
-            } finally {
-                btn.disabled = false;
-                btn.innerHTML = '<i class="bi bi-magic"></i> AI 補全';
-            }
-        }
-    </script>
+    <partial name="_ValidationScriptsPartial" />
 }
