@@ -3,6 +3,7 @@ namespace DemoApi.Models
     public class Member
     {
         public int Id { get; set; }
+        public string item_id => Id.ToString("D4");
         public string? Company { get; set; }
         public string Name { get; set; } = string.Empty; // Contact Name
         public string Email { get; set; } = string.Empty;
