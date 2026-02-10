@@ -1,17 +1,19 @@
 ﻿@page
 @model IndexModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
 @{
-    ViewData["Title"] = "首頁 - AI 會員管理系統";
+    ViewData["Title"] = Localizer["Title"];
 }
 
 <div class="hero-section fade-in">
     <div class="container text-start">
-        <h1 class="hero-title">櫻花<span>升降機</span></h1>
+        <h1 class="hero-title">@Localizer["HeroTitle"]<span>@Localizer["HeroTitleSpan"]</span></h1>
         <p class="lead text-muted mb-5 col-lg-6">
-            櫻花電梯股份有限公司是台、日合作公司，以台灣作為主要生產製造基地，由日本、台灣研發設計及生產團隊，以嚴謹、專業、負責、用心的態度，專注於產品開發及高品質製程，體現日本職人精神，滿足全球客戶的需求。
+            @Localizer["HeroDescription"]
         </p>
         <div class="d-flex gap-3">
-            <a asp-page="/Members/Create" class="btn btn-primary btn-lg px-5">聯絡我們</a>
+            <a asp-page="/Members/Create" class="btn btn-primary btn-lg px-5">@Localizer["ContactUs"]</a>
             <!-- <a href="#features" class="btn btn-outline-dark btn-lg px-5">技術概覽</a> -->
         </div>
     </div>

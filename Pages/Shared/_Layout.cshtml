@@ -1,9 +1,11 @@
-﻿<!DOCTYPE html>
-<html lang="zh-Hant">
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+<!DOCTYPE html>
+<html lang="@System.Globalization.CultureInfo.CurrentUICulture.Name">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - AI 會員管理</title>
+    <title>@ViewData["Title"] - SAKURA LIFT</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,7 +17,7 @@
     <header>
         <div class="top-bar bg-dark text-white py-1 small">
             <div class="container d-flex justify-content-between">
-                <div>升降機技術</div>
+                <div>@Localizer["Technology"]</div>
                 <div class="d-flex gap-3">
                     <a href="/Culture?culture=zh-TW&returnUrl=@Context.Request.Path" class="text-white text-decoration-none">繁體中文</a>
                     <a href="/Culture?culture=en-US&returnUrl=@Context.Request.Path" class="text-white text-decoration-none">English</a>
@@ -29,7 +31,7 @@
                     <div class="logo-circle me-2"></div>
                     <div class="brand-text">
                         SAKURA <span>LIFT</span>
-                        <small class="d-block">櫻花升降機</small>
+                        <small class="d-block">@Localizer["BrandSmall"]</small>
                     </div>
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse">
@@ -38,23 +40,23 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-end">
                     <ul class="navbar-nav gap-2">
                         <li class="nav-item">
-                            <a class="nav-link @(Context.Request.Path == "/" ? "active" : "")" asp-page="/Index">首頁</a>
+                            <a class="nav-link @(Context.Request.Path == "/" ? "active" : "")" asp-page="/Index">@Localizer["Home"]</a>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle @(Context.Request.Path.StartsWithSegments("/Products") ? "active" : "")" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                產品資訊
+                                @Localizer["Products"]
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" asp-page="/Products/List" asp-route-category="pitless">無機坑電梯</a></li>
-                                <li><a class="dropdown-item" asp-page="/Products/List" asp-route-category="home">家庭電梯</a></li>
-                                <li><a class="dropdown-item" asp-page="/Products/List" asp-route-category="bracket">角架電梯</a></li>
+                                <li><a class="dropdown-item" asp-page="/Products/List" asp-route-category="pitless">@Localizer["PitlessElevator"]</a></li>
+                                <li><a class="dropdown-item" asp-page="/Products/List" asp-route-category="home">@Localizer["HomeElevator"]</a></li>
+                                <li><a class="dropdown-item" asp-page="/Products/List" asp-route-category="bracket">@Localizer["BracketElevator"]</a></li>
                             </ul>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-page="/Cases/Index">實績案例</a>
+                            <a class="nav-link" asp-page="/Cases/Index">@Localizer["Cases"]</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link btn btn-primary text-white px-3" asp-page="/Members/Index">會員管理</a>
+                            <a class="nav-link btn btn-primary text-white px-3" asp-page="/Members/Index">@Localizer["MemberManagement"]</a>
                         </li>
                     </ul>
                 </div>
@@ -68,7 +70,7 @@
             <div class="container">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb mb-0">
-                        <li class="breadcrumb-item"><a asp-page="/Index">首頁</a></li>
+                        <li class="breadcrumb-item"><a asp-page="/Index">@Localizer["Home"]</a></li>
                         <li class="breadcrumb-item active" aria-current="page">@ViewData["Title"]</li>
                     </ol>
                 </nav>
@@ -83,7 +85,7 @@
 
     <footer class="footer text-muted py-4 mt-5">
         <div class="container text-center border-top pt-4">
-            &copy; 2026 - DemoApi AI System - <a asp-area="" asp-page="/Privacy" class="text-decoration-none">隱私權政策</a>
+            &copy; 2026 - DemoApi AI System - <a asp-area="" asp-page="/Privacy" class="text-decoration-none">@Localizer["PrivacyPolicy"]</a>
         </div>
     </footer>
 
