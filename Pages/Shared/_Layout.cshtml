@@ -12,6 +12,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/chat-widget.css" asp-append-version="true" />
 </head>
 <body>
     <header>
@@ -93,6 +94,30 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
 
+    <!-- AI 客服跳窗 -->
+    <div id="chat-widget-btn" class="chat-widget-btn">
+        <i class="bi bi-chat-dots-fill"></i>
+    </div>
+
+    <div id="chat-widget-window" class="chat-widget-window">
+        <div class="chat-header">
+            <h4><i class="bi bi-robot me-2"></i>櫻花 AI 客服</h4>
+            <div id="chat-close-btn" class="chat-close-btn">
+                <i class="bi bi-x-lg"></i>
+            </div>
+        </div>
+        <div id="chat-content" class="chat-content">
+            <!-- 對話內容將在此生成 -->
+        </div>
+        <div class="chat-footer">
+            <input type="text" id="chat-input" placeholder="請輸入您的問題..." autocomplete="off" />
+            <button id="chat-send-btn">
+                <i class="bi bi-send-fill"></i>
+            </button>
+        </div>
+    </div>
+
+    <script src="~/js/chat-widget.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

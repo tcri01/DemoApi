@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using DemoApi.Data;
 using DemoApi.Services;
+using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,5 +46,18 @@ app.UseRequestLocalization();
 app.UseAuthorization();
 
 app.MapRazorPages();
+
+// AI 客服對話 API
+app.MapPost("/api/chat/ask", async (IAIService aiService, HttpRequest request) =>
+{
+    using var reader = new StreamReader(request.Body);
+    var body = await reader.ReadToEndAsync();
+    // 假設 Body 是一個簡單的問句字串或 JSON
+    var doc = JsonDocument.Parse(body);
+    var question = doc.RootElement.GetProperty("question").GetString() ?? "";
+    
+    var answer = await aiService.GetChatResponseAsync(question);
+    return Results.Ok(new { answer });
+});
 
 app.Run();
