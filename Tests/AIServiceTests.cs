@@ -11,15 +11,12 @@ namespace DemoApi.Tests
     {
         private readonly AIService _aiService;
         private readonly IConfiguration _configuration;
+        private readonly Mock<Microsoft.AspNetCore.Hosting.IWebHostEnvironment> _mockEnv;
 
         public AIServiceTests()
         {
             var myConfiguration = new Dictionary<string, string>
             {
-                {"CompanyInfo:Name", "Test Sakura"},
-                {"CompanyInfo:Phone", "02-12345678"},
-                {"CompanyInfo:Address", "Test Address"},
-                {"CompanyInfo:BusinessHours", "Mon-Fri"},
                 {"AISettings:ApiKey", "DUMMY_KEY"}
             };
 
@@ -27,7 +24,10 @@ namespace DemoApi.Tests
                 .AddInMemoryCollection(myConfiguration)
                 .Build();
 
-            _aiService = new AIService(_configuration);
+            _mockEnv = new Mock<Microsoft.AspNetCore.Hosting.IWebHostEnvironment>();
+            _mockEnv.Setup(e => e.ContentRootPath).Returns(System.IO.Directory.GetCurrentDirectory());
+
+            _aiService = new AIService(_configuration, _mockEnv.Object);
         }
 
         [Theory]

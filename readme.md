@@ -40,3 +40,4 @@ sequenceDiagram
 ## 4. 修復記錄
 - **修復 Google SDK 引用**: 安裝了 `Google.GenerativeAI` NuGet 套件，解決 `Google` 命名空間找不到的問題。
 - **補全 API 金鑰讀取**: 在 `AIService` 中正確讀取 `appsettings.json` 的 `AISettings:ApiKey` 配置。
+- **資料移出至 Markdown**: 將原本在 `appsettings.json` 的 `CompanyInfo` 移出至 `Resources/CompanyInfo.md`，方便維護並提升 AI 讀取彈性。
