@@ -1,8 +1,5 @@
 using Google.GenAI;
 using Google.GenAI.Types;
-using DemoApi.Models;
-using Microsoft.Extensions.Configuration;
-using System.Text.Json;
 
 namespace DemoApi.Services
 {
@@ -90,7 +87,14 @@ namespace DemoApi.Services
                 var client = new Client(apiKey: _apiKey);
 
                 // 2. 處理 System Instruction (僅基於 Markdown 資料回答)
-                string systemInstruction = $"你是一個櫻花升降機的客服 AI。請僅使用以下資料回答問題。如果資料中沒有提到答案，請直接回答『無資料』，不要多加解釋，當客戶詢問項目為多項時，請掃描『清單』中所有的條目。只要名稱或功能部分匹配，就視為有資料。固定資料如下 (Markdown 格式)：\n{_companyMarkdown}";
+                string systemInstruction = $@"
+                你是一個專業的客服機器人。
+                請『嚴格』參考下方的 Markdown 資料來回答問題。
+                若資料中找不到答案，請僅回覆『無資料』，不要嘗試編造。
+                
+                Markdown 資料如下：
+                {_companyMarkdown}
+                ";
 
                 // 3. 呼叫 API
                 var response = await client.Models.GenerateContentAsync("gemini-2.5-flash", question, new GenerateContentConfig
