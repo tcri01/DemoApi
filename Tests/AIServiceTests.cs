@@ -19,7 +19,8 @@ namespace DemoApi.Tests
                 {"CompanyInfo:Name", "Test Sakura"},
                 {"CompanyInfo:Phone", "02-12345678"},
                 {"CompanyInfo:Address", "Test Address"},
-                {"CompanyInfo:BusinessHours", "Mon-Fri"}
+                {"CompanyInfo:BusinessHours", "Mon-Fri"},
+                {"AISettings:ApiKey", "DUMMY_KEY"}
             };
 
             _configuration = new ConfigurationBuilder()

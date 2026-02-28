@@ -36,3 +36,7 @@ sequenceDiagram
 - **響應式企業形象網頁設計**: 櫻花升降機品牌配色（紅、灰、白）
 - **符合 SOLID 設計原則的架構**
 - **單元測試**: 保證核心商業邏輯穩定性
+
+## 4. 修復記錄
+- **修復 Google SDK 引用**: 安裝了 `Google.GenerativeAI` NuGet 套件，解決 `Google` 命名空間找不到的問題。
+- **補全 API 金鑰讀取**: 在 `AIService` 中正確讀取 `appsettings.json` 的 `AISettings:ApiKey` 配置。

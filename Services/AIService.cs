@@ -1,3 +1,5 @@
+using Google.GenAI;
+using Google.GenAI.Types;
 using DemoApi.Models;
 using Microsoft.Extensions.Configuration;
 using System.Text.Json;
@@ -18,49 +20,76 @@ namespace DemoApi.Services
     public class AIService : IAIService
     {
         private readonly CompanyInfo _companyInfo;
+        private readonly string _apiKey;
 
+        /// <summary>
+        /// 初始化 AIService，從配置中讀取公司資訊與 AI 設定。
+        /// </summary>
+        /// <param name="configuration">應用程式配置介面</param>
         public AIService(IConfiguration configuration)
         {
             // 將設定檔中的公司資訊對應至模型
             _companyInfo = configuration.GetSection("CompanyInfo").Get<CompanyInfo>() ?? new CompanyInfo();
+            // 從設定檔讀取 AI 相關設定
+            _apiKey = configuration["AISettings:ApiKey"] ?? string.Empty;
         }
 
+        /// <summary>
+        /// 根據會員背景建議追蹤備註。
+        /// </summary>
+        /// <param name="memberName">會員姓名</param>
+        /// <param name="bio">會員簡介</param>
+        /// <returns>AI 建議的備註內容</returns>
         public async Task<string> SuggestNotesAsync(string memberName, string bio)
         {
-            // TODO: Hook up to OpenAI / Claude / Gemini API
+            // TODO: 串接實際 API (目前為模擬回傳)
             await Task.Delay(500); 
             return $"AI Suggestion for {memberName}: 基於該會員的背景「{bio}」，建議關注其在技術社群的活躍度。";
         }
 
+        /// <summary>
+        /// 自動補全會員描述內容。
+        /// </summary>
+        /// <param name="currentText">目前的描述文字</param>
+        /// <returns>補全後的描述文字</returns>
         public async Task<string> CompleteDescriptionAsync(string currentText)
         {
-            // TODO: Hook up to OpenAI / Claude / Gemini API
+            // TODO: 串接實際 API (目前為模擬回傳)
             await Task.Delay(500); 
             return currentText + " [AI 補全內容：該會員展現了卓越的團隊協作能力，且具備深厚的技術背景，是一位值得長期合作的專業人士。]";
         }
 
         public async Task<string> GetChatResponseAsync(string question)
         {
-            // 系統提示詞：限制 AI 只能基於固定資料回答
-            string companyJson = JsonSerializer.Serialize(_companyInfo);
-            string systemPrompt = $"你是一個櫻花升降機的客服 AI。請僅使用以下資料回答問題。如果資料中沒有提到答案，請回答『無資料』，且不要解釋。固定資料如下：\n{companyJson}";
+            // 檢查 API Key 是否存在
+            if (string.IsNullOrEmpty(_apiKey))
+            {
+                return "API 金鑰未配置。";
+            }
 
-            // TODO: 串接實際 API (如 OpenAI Chat Completion)
-            // 這裡模擬 AI 查詢固定資料的關鍵字邏輯以符合「無資料」需求
-            await Task.Delay(500);
+            try 
+            {
+                // 1. 初始化官方 Google.GenAI Client (顯式指定為 Gemini Developer API 模式)
+                var client = new Google.GenAI.Client(apiKey: _apiKey);
 
-            if (string.IsNullOrWhiteSpace(question)) return "無資料";
+                // 2. 處理 System Instruction (僅基於固定資料回答)
+                string companyJson = JsonSerializer.Serialize(_companyInfo);
+                string systemInstruction = $"你是一個櫻花升降機的客服 AI。請僅使用以下資料回答問題。如果資料中沒有提到答案，請直接回答『無資料』，不要多加解釋。固定資料如下：\n{companyJson}";
 
-            // 簡易模擬 AI 邏輯：判斷問題是否包含特定關鍵字，若有則回答對應欄位，否則回傳無資料
-            question = question.ToLower();
-            if (question.Contains("電話") || question.Contains("聯繫")) return $"公司電話為：{_companyInfo.Phone}";
-            if (question.Contains("地址") || question.Contains("在哪")) return $"公司地址位於：{_companyInfo.Address}";
-            if (question.Contains("時間") || question.Contains("營業")) return $"營業時間：{_companyInfo.BusinessHours}";
-            if (question.Contains("email") || question.Contains("信箱")) return $"電子郵件：{_companyInfo.Email}";
-            if (question.Contains("你是誰") || question.Contains("公司名字")) return $"我們是：{_companyInfo.Name}";
-            if (question.Contains("介紹") || question.Contains("做什麼")) return _companyInfo.OtherDetails;
+                // 3. 呼叫 API
+                var response = await client.Models.GenerateContentAsync("gemini-1.5-flash", question, new GenerateContentConfig
+                {
+                    SystemInstruction = new() { Parts = [new() { Text = systemInstruction }] },
+                    Temperature = 0
+                });
 
-            return "無資料";
+                return response.Candidates?[0].Content?.Parts?[0].Text ?? "無資料";
+            }
+            catch (Exception ex)
+            {
+                // 發生錯誤時記錄並回傳提示
+                return $"AI 處理時發生錯誤: {ex.Message}";
+            }
         }
     }
 }
